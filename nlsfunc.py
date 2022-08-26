@@ -1,11 +1,10 @@
-import os, winsound
+import os, winsound, warnings
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from scipy import stats, optimize
 from scipy.optimize import curve_fit
-import warnings
 from typing import Union
 from pandas.core.common import SettingWithCopyWarning
 from matplotlib.patches import Ellipse
