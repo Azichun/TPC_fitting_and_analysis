@@ -48,7 +48,7 @@ for k, v in out.items():
         plt.title(f"{k}_{v.iloc[i][0]}")
         plt.savefig(f"{save_path}\\{k}_{v.iloc[i][0]}.jpg")  # visualization
 
-out = TPC_fit({k:v for k, v in dfs.items() if k in ["SO20S2D_L", "SO20S3B_L", "SO20S3E_L"]},
+out = TPC_fit({k: v for k, v in dfs.items() if k in ["SO20S2D_L", "SO20S3B_L", "SO20S3E_L"]},
               func, audio=True)  # re-run unsatisfactory curves
 out.to_csv(f"{save_path}\\param_rerun.csv")  # export finalized parameters in a separate csv
 for i in range(out.shape[0]):
