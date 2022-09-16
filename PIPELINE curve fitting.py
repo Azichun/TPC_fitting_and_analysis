@@ -1,5 +1,3 @@
-import setup
-import nlsfunc
 import os, logging, warnings, winsound, matplotlib
 import numpy as np
 import pandas as pd
@@ -7,6 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from nlsfunc import *
 from tqdm import tqdm
+import nlsfunc
 
 matplotlib.use("svg")
 
@@ -24,7 +23,7 @@ df_path = "F:\\mphil\\Github\\TPC_fitting_and_analysis_for_publish\\test_data"
 save_path = "F:\\mphil\\Github\\TPC_fitting_and_analysis_for_publish\\test_data\\para"
 
 # Choose which function to fit to the raw data
-func = ["betbet", "gaugau", "quaqua", "gaubet", "quabet", "quagau"]
+func = ["quaqua"]
 
 # May modify the function "randomize" in module "nlsfunc" if necessary
 
@@ -48,17 +47,18 @@ for k, v in out.items():
         plt.title(f"{k}_{v.iloc[i][0]}")
         plt.savefig(f"{save_path}\\{k}_{v.iloc[i][0]}.jpg")  # visualization
 
-out = TPC_fit({k: v for k, v in dfs.items() if k in ["SO20S2D_L", "SO20S3B_L", "SO20S3E_L"]},
-              func, audio=True)  # re-run unsatisfactory curves
-out.to_csv(f"{save_path}\\param_rerun.csv")  # export finalized parameters in a separate csv
-for i in range(out.shape[0]):
-    fig, ax = plt.subplots()
-    ax.scatter(dfs[out.iloc[i][1]][:, 0], dfs[out.iloc[i][1]][:, 1])
-    ax.plot(dfs[out.iloc[i][1]][:, 0], globals()[out.iloc[i][0]](dfs[out.iloc[i][1]][:, 0], list(out.iloc[i][2:])))
-    plt.title(f"{out.iloc[i][0]}_{out.iloc[i][1]}")
-    plt.savefig(f"{save_path}\\{out.iloc[i][0]}_{out.iloc[i][1]}_rerun.jpg")  # visualization
+##################
+##### Re-run #####
+##################
+out = TPC_fit({k: v for k, v in dfs.items() if k in ["SO20S2D_L", "SO20S2H_S"]},
+              func, audio=True, patience=100)  # re-run unsatisfactory curves
+for k, v in out.items():
+    v.to_csv(f"{save_path}\\{k}_param_rerun.csv")  # export finalized parameters # export finalized parameters in a separate csv
 
-
-
-
-
+for k, v in out.items():
+    for i in range(v.shape[0]):
+        fig, ax = plt.subplots()
+        ax.scatter(dfs[v.iloc[i][0]][:, 0], dfs[v.iloc[i][0]][:, 1])
+        ax.plot(dfs[v.iloc[i][0]][:, 0], globals()[k](dfs[v.iloc[i][0]][:, 0], list(v.iloc[i][1:])))
+        plt.title(f"{k}_{v.iloc[i][0]}")
+        plt.savefig(f"{save_path}\\{k}_{v.iloc[i][0]}_rerun.jpg")  # visualization

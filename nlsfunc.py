@@ -164,7 +164,7 @@ def randomize(para_name: list, perm: int):
         elif p in ["u", "u2"]:
             out.append(np.random.uniform(0, 60, perm))  # Gaussian: Mean
         elif p in ["sig", "sig2"]:
-            out.append(np.random.exponential(1, perm))  # Gaussian: SD
+            out.append(np.random.uniform(0, 60, perm))  # Gaussian: SD
         elif p in ["qa", "qa2"]:
             out.append(np.random.uniform(-10, 0, perm))  # Quadratic: x2
         elif p in ["qb", "qb2"]:
